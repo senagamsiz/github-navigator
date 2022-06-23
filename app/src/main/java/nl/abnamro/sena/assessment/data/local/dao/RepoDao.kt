@@ -5,14 +5,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import nl.abnamro.sena.assessment.data.model.Repo
+import nl.abnamro.sena.assessment.data.local.model.RepoItem
 
 @Dao
 interface RepoDao {
 
-    @Query("SELECT * FROM repo_table ORDER BY name")
-    fun getAllReposByName(): Flow<List<Repo.RepoItem>>
+    @Query("SELECT * FROM RepoItem")
+    fun getAllRepos(): Flow<List<RepoItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllRepos(vararg repo: Repo)
+    suspend fun insertAllRepos(vararg repo: RepoItem)
+
 }
