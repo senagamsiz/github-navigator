@@ -1,8 +1,9 @@
 package nl.abnamro.sena.assessment.data.remote
 
-import nl.abnamro.sena.assessment.data.remote.api.RepoApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import nl.abnamro.sena.assessment.BuildConfig
+import nl.abnamro.sena.assessment.data.remote.api.RepoApi
 import okhttp3.MediaType
 import retrofit2.Retrofit
 
@@ -15,10 +16,14 @@ object RetrofitHelper {
         isLenient = true
     }
 
+    private fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder().baseUrl(BuildConfig.API_URL)
+            .addConverterFactory(
+                json.asConverterFactory(contentType)
+            ).build()
+    }
 
-
-
-    fun provideHouseApi(): RepoApi =
+    fun provideRepoApi(): RepoApi =
         provideRetrofit().create(RepoApi::class.java)
 
 }
