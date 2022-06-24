@@ -6,25 +6,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Repo(
     @SerialName("id")
-    val id: Int?,
+    val id: Int,
     @SerialName("name")
-    val name: String?,
+    val name: String,
     @SerialName("full_name")
-    val fullName: String?,
+    val fullName: String,
     @SerialName("private")
-    val isPrivate: Boolean?,
+    val isPrivate: Boolean,
     @SerialName("owner")
-    val owner: Owner?,
+    val owner: Owner,
     @SerialName("html_url")
-    val htmlUrl: String?,
+    val htmlUrl: String,
     @SerialName("description")
-    val description: String?,
+    val description: String,
     @SerialName("visibility")
-    val visibility: String?,
+    val visibility: String,
 ) {
     @Serializable
     data class Owner(
         @SerialName("avatar_url")
-        val avatarUrl: String?,
+        val avatarUrl: String,
     )
 }

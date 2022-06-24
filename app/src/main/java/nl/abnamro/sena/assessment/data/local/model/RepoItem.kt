@@ -11,7 +11,7 @@ data class RepoItem(
     val fullName: String,
     val description: String,
     val avatarImageUrl: String,
-    val isVisible: Boolean,
-    val isPublic: Boolean,
+    val visibility: String,
+    val isPrivate: Boolean,
     val repoUrl: String
 )
