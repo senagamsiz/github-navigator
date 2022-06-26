@@ -1,4 +1,4 @@
-package nl.abnamro.sena.assessment.ui.viewmodel
+package nl.abnamro.sena.assessment.ui.viewmodel.overview
 
 import android.util.Log
 import androidx.lifecycle.LiveData

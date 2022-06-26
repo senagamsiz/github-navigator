@@ -33,4 +33,8 @@ class RepoRepositoryImpl(
     override suspend fun showRepos(): Flow<List<RepoItem>> {
         return repoDao.getAllRepos()
     }
+
+    override suspend fun getRepoById(repoId: Int): Flow<RepoItem> {
+        return repoDao.getRepoById(repoId)
+    }
 }
