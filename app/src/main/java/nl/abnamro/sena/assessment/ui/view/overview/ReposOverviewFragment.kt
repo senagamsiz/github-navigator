@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import nl.abnamro.sena.assessment.databinding.FragmentOverviewBinding
 import nl.abnamro.sena.assessment.ui.view.overview.adapter.RepoItemAdapter
@@ -83,7 +84,8 @@ class ReposOverviewFragment : Fragment() {
     }
 
     private fun repoItemClickListener(id: Int) {
-
+        val action = ReposOverviewFragmentDirections.actionReposOverviewFragmentToDetailsFragment(id)
+        binding.root.findNavController().navigate(action)
     }
 
 }
