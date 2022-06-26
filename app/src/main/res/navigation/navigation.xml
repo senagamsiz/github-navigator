@@ -9,5 +9,19 @@
         android:id="@+id/reposOverviewFragment"
         android:name="nl.abnamro.sena.assessment.ui.view.overview.ReposOverviewFragment"
         android:label="fragment_overview"
-        tools:layout="@layout/fragment_overview" />
+        tools:layout="@layout/fragment_overview" >
+        <action
+            android:id="@+id/action_reposOverviewFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="nl.abnamro.sena.assessment.ui.view.details.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="repo_id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>
