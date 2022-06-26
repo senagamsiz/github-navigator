@@ -16,4 +16,6 @@ interface RepoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllRepos(vararg repo: RepoItem)
 
+    @Query("SELECT * FROM RepoItem WHERE id=:repoId")
+    fun getRepoById(repoId: Int): Flow<RepoItem>
 }

@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import nl.abnamro.sena.assessment.databinding.FragmentOverviewBinding
 import nl.abnamro.sena.assessment.ui.view.overview.adapter.RepoItemAdapter
 import nl.abnamro.sena.assessment.ui.view.overview.adapter.RepoItemClickListener
-import nl.abnamro.sena.assessment.ui.viewmodel.ReposOverviewEvent
-import nl.abnamro.sena.assessment.ui.viewmodel.ReposOverviewUiState
-import nl.abnamro.sena.assessment.ui.viewmodel.ReposOverviewViewModel
+import nl.abnamro.sena.assessment.ui.viewmodel.overview.ReposOverviewEvent
+import nl.abnamro.sena.assessment.ui.viewmodel.overview.ReposOverviewUiState
+import nl.abnamro.sena.assessment.ui.viewmodel.overview.ReposOverviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

@@ -10,7 +10,8 @@ import nl.abnamro.sena.assessment.data.local.database.AppDatabase
 import nl.abnamro.sena.assessment.data.remote.api.RepoApi
 import nl.abnamro.sena.assessment.data.repository.RepoRepository
 import nl.abnamro.sena.assessment.data.repository.RepoRepositoryImpl
-import nl.abnamro.sena.assessment.ui.viewmodel.ReposOverviewViewModel
+import nl.abnamro.sena.assessment.ui.viewmodel.details.RepoDetailsViewModel
+import nl.abnamro.sena.assessment.ui.viewmodel.overview.ReposOverviewViewModel
 import okhttp3.MediaType
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -25,6 +26,7 @@ val appModules = module {
     single { provideDao(get()) }
     single<RepoRepository> { RepoRepositoryImpl(get(), get()) }
     viewModel { ReposOverviewViewModel(get()) }
+    viewModel { RepoDetailsViewModel(get()) }
 
 }
 
