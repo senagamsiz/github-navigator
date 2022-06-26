@@ -38,7 +38,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        dataBinding = true
+        viewBinding true
     }
 }
 
@@ -63,6 +63,7 @@ dependencies {
     //Room
     implementation "androidx.room:room-ktx:${rootProject.ext.roomVersion}"
     implementation "androidx.room:room-runtime:${rootProject.ext.roomVersion}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:${rootProject.ext.roomVersion}"
 
     //Navigation Component
