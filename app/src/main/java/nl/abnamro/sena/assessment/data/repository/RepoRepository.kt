@@ -1,7 +1,7 @@
 package nl.abnamro.sena.assessment.data.repository
 
-import nl.abnamro.sena.assessment.data.local.model.RepoItem
 import kotlinx.coroutines.flow.Flow
+import nl.abnamro.sena.assessment.data.local.model.RepoItem
 
 interface RepoRepository {
     suspend fun loadRepos()

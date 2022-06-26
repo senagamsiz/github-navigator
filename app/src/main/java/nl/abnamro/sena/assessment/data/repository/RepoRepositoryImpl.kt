@@ -14,16 +14,16 @@ class RepoRepositoryImpl(
 
     override suspend fun loadRepos() {
         withContext(Dispatchers.IO) {
-            val repoList: Array<RepoItem> = repoApi.getReposFromApi().map { repo ->
+            val repoList: Array<RepoItem> = repoApi.getReposFromApi(1, 10).map { repo ->
                 RepoItem(
-                    id = repo.id,
-                    name = repo.name,
-                    fullName = repo.fullName,
-                    description = repo.description,
-                    isPrivate = repo.isPrivate,
-                    visibility = repo.visibility,
-                    avatarImageUrl = repo.owner.avatarUrl,
-                    repoUrl = repo.htmlUrl
+                    id = repo.id ?: 0,
+                    name = repo.name ?: "",
+                    fullName = repo.fullName ?: "",
+                    description = repo.description ?: "",
+                    isPrivate = repo.isPrivate ?: false,
+                    visibility = repo.visibility ?: "",
+                    avatarImageUrl = repo.owner?.avatarUrl ?: "",
+                    repoUrl = repo.htmlUrl ?: ""
                 )
             }.toTypedArray()
             repoDao.insertAllRepos(*repoList)
