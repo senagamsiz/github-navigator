@@ -35,7 +35,8 @@ class ReposOverviewViewModel(private val repository: RepoRepository) : ViewModel
     private fun showAlreadyStoredRepos() = viewModelScope.launch {
         repository.showRepos().collect { repos ->
             if (repos.isNullOrEmpty()) {
-                _uiState.value = ReposOverviewUiState.ShowError
+                _uiState.value =
+                    ReposOverviewUiState.ShowError("There is no any repo item to show!")
             } else {
                 _uiState.value = ReposOverviewUiState.ReposLoaded(repos)
             }
