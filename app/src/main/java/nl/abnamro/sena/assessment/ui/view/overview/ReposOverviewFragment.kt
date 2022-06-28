@@ -5,13 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
+import nl.abnamro.sena.assessment.data.paging.asMergedLoadStates
 import nl.abnamro.sena.assessment.databinding.FragmentOverviewBinding
+import nl.abnamro.sena.assessment.ui.view.overview.adapter.ReposLoadStateAdapter
 import nl.abnamro.sena.assessment.ui.view.overview.adapter.RepoItemAdapter
 import nl.abnamro.sena.assessment.ui.view.overview.adapter.RepoItemClickListener
-import nl.abnamro.sena.assessment.ui.viewmodel.overview.ReposOverviewEvent
-import nl.abnamro.sena.assessment.ui.viewmodel.overview.ReposOverviewUiState
 import nl.abnamro.sena.assessment.ui.viewmodel.overview.ReposOverviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,8 +41,13 @@ class ReposOverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
+        initSwipeToRefresh()
         setupRecyclerView()
+        initAdapter()
+    }
+
+    private fun initSwipeToRefresh() {
+        binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
     }
 
     private fun setupRecyclerView() {
@@ -44,48 +55,40 @@ class ReposOverviewFragment : Fragment() {
         binding.repoList.adapter = adapter
     }
 
-    private fun initObservers() {
-        viewModel.dispatch(ReposOverviewEvent.LoadData)
-        viewModel.uiState.observe(viewLifecycleOwner) { renderUi(it) }
-    }
+    private fun initAdapter() {
+        binding.repoList.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = ReposLoadStateAdapter(adapter),
+            footer = ReposLoadStateAdapter(adapter)
+        )
 
-    private fun renderUi(uiState: ReposOverviewUiState) {
-        when (uiState) {
-            is ReposOverviewUiState.ReposLoaded -> showSuccessState(uiState)
-            is ReposOverviewUiState.ShowError -> showErrorState(uiState)
-            is ReposOverviewUiState.ShowLoading -> showLoadingState()
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collect { loadStates ->
+                binding.swipeRefresh.isRefreshing =
+                    loadStates.mediator?.refresh is LoadState.Loading
+            }
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.repos.collectLatest {
+                adapter.submitData(it)
+            }
+        }
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow
+                .asMergedLoadStates()
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { binding.repoList.scrollToPosition(0) }
         }
     }
 
-    private fun showLoadingState() {
-        binding.errorText.visibility = View.GONE
-        binding.repoList.visibility = View.GONE
-        binding.loadingProgress.visibility = View.VISIBLE
+    private fun repoItemClickListener(id: Int) {
+        val action =
+            ReposOverviewFragmentDirections.actionReposOverviewFragmentToDetailsFragment(id)
+        binding.root.findNavController().navigate(action)
     }
-
-    private fun showErrorState(uiState: ReposOverviewUiState.ShowError) {
-        binding.loadingProgress.visibility = View.GONE
-        binding.repoList.visibility = View.GONE
-        binding.errorText.text = uiState.message
-        binding.errorText.visibility = View.VISIBLE
-    }
-
-    private fun showSuccessState(state: ReposOverviewUiState.ReposLoaded) {
-        binding.errorText.visibility = View.GONE
-        binding.loadingProgress.visibility = View.GONE
-        adapter.submitList(state.repos)
-        binding.repoList.visibility = View.VISIBLE
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    private fun repoItemClickListener(id: Int) {
-        val action = ReposOverviewFragmentDirections.actionReposOverviewFragmentToDetailsFragment(id)
-        binding.root.findNavController().navigate(action)
-    }
-
 }
