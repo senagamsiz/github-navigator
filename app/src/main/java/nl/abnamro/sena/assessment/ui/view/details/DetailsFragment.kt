@@ -42,7 +42,7 @@ class DetailsFragment : Fragment() {
     private fun initObservers() {
         viewModel.loadDetails(args.repoId)
         viewModel.uiState.observe(viewLifecycleOwner) { renderUi(it) }
-        viewModel.navigationt.observe(viewLifecycleOwner) { navigate(it)}
+        viewModel.navigation.observe(viewLifecycleOwner) { navigate(it)}
     }
 
     private fun navigate(target: RepoDetailsNavigationTarget) {
