@@ -2,7 +2,7 @@ package nl.abnamro.sena.assessment.ui.view.overview.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import nl.abnamro.sena.assessment.data.local.model.RepoItem
@@ -10,7 +10,7 @@ import nl.abnamro.sena.assessment.databinding.RepoItemBinding
 
 
 class RepoItemAdapter(private val clickListener: RepoItemClickListener) :
-    ListAdapter<RepoItem, RepoItemAdapter.ViewHolder>(RepoItemDiffCallBack()) {
+    PagingDataAdapter<RepoItem, RepoItemAdapter.ViewHolder>(RepoItemDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: RepoItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -37,7 +37,7 @@ class RepoItemAdapter(private val clickListener: RepoItemClickListener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        getItem(position)?.let { holder.bind(it, clickListener) }
     }
 
 }

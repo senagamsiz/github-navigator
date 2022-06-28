@@ -5,8 +5,10 @@ import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import nl.abnamro.sena.assessment.BuildConfig
+import nl.abnamro.sena.assessment.data.local.dao.RemoteKeysDao
 import nl.abnamro.sena.assessment.data.local.dao.RepoDao
 import nl.abnamro.sena.assessment.data.local.database.AppDatabase
+import nl.abnamro.sena.assessment.data.paging.datasource.ReposRemoteMediator
 import nl.abnamro.sena.assessment.data.remote.api.RepoApi
 import nl.abnamro.sena.assessment.data.repository.RepoRepository
 import nl.abnamro.sena.assessment.data.repository.RepoRepositoryImpl
@@ -19,17 +21,16 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val appModules = module {
-
     factory { provideRepoApi(get()) }
     single { provideRetrofit() }
     single { provideDatabase(androidApplication()) }
-    single { provideDao(get()) }
+    single { provideRepoDao(get()) }
+    single { provideRemoteKeysDao(get()) }
+    single { ReposRemoteMediator(get(), get()) }
     single<RepoRepository> { RepoRepositoryImpl(get(), get()) }
     viewModel { ReposOverviewViewModel(get()) }
     viewModel { RepoDetailsViewModel(get()) }
-
 }
-
 //Networking
 private val contentType: MediaType = MediaType.get("application/json")
 
@@ -38,7 +39,6 @@ private val json = Json {
     explicitNulls = false
     isLenient = true
 }
-
 private fun provideRetrofit(): Retrofit {
     return Retrofit.Builder().baseUrl(BuildConfig.API_URL)
         .addConverterFactory(
@@ -57,6 +57,10 @@ private fun provideDatabase(application: Application): AppDatabase {
         .build()
 }
 
-private fun provideDao(database: AppDatabase): RepoDao {
+private fun provideRepoDao(database: AppDatabase): RepoDao {
     return database.repoDao()
+}
+
+private fun provideRemoteKeysDao(database: AppDatabase): RemoteKeysDao {
+    return database.remoteKeysDao()
 }
