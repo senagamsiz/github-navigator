@@ -15,6 +15,7 @@ android {
         targetSdk rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,6 +41,10 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
     }
 }
 
@@ -79,6 +84,9 @@ dependencies {
     //Pagination
     implementation "androidx.paging:paging-runtime:${rootProject.ext.pagingVersion}"
 
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
     //Testing libraries
     testImplementation "junit:junit:${rootProject.ext.junitVersion}"
     testImplementation "com.google.truth:truth:${rootProject.ext.truthVersion}"
@@ -86,8 +94,17 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:${rootProject.ext.mockitoKotlinVersion}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${rootProject.ext.coroutinesTestVersion}"
     testImplementation "androidx.arch.core:core-testing:${rootProject.ext.coreTestingVersion}"
+    androidTestImplementation "com.google.truth:truth:${rootProject.ext.truthVersion}"
     androidTestImplementation "androidx.test.ext:junit:${rootProject.ext.androidXTestExtKotlinRunnerVersion}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.espressoVersion}"
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${rootProject.ext.coroutinesTestVersion}"
+    androidTestImplementation "androidx.arch.core:core-testing:${rootProject.ext.coreTestingVersion}"
+    debugImplementation "androidx.fragment:fragment-testing:${rootProject.ext.fragmentVersion}"
+    androidTestImplementation "androidx.navigation:navigation-testing:${rootProject.ext.navigationComponentVersion}"
+    androidTestImplementation 'org.mockito:mockito-android:2.7.15'
+
 }
 
 

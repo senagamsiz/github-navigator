@@ -15,7 +15,7 @@ class RepoDetailsViewModel(private val repository: RepoRepository) : ViewModel()
         get() = _uiState
 
     private val _navigation = MutableLiveData<RepoDetailsNavigationTarget>()
-    val navigationt: LiveData<RepoDetailsNavigationTarget>
+    val navigation: LiveData<RepoDetailsNavigationTarget>
         get() = _navigation
 
     fun dispatch(event: RepoDetailsEvent) {
