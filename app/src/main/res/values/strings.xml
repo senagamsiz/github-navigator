@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GithubNavigator</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_avatar_image">User avatar image</string>
+    <string name="open_in_browser">Open in Browser</string>
 </resources>
